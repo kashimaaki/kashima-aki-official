@@ -98,10 +98,7 @@
                 <iframe width="800" height="450" src="https://www.youtube.com/embed/zAwnz9scWGQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin: 20px 0;"></iframe>
                 <iframe width="800" height="450" src="https://www.youtube.com/embed/0qcESaJGCJM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin: 20px 0;"></iframe>
             </div>
-            <h2>インタラクティブキャンバス</h2>
-            <p>下のキャンバスで自由に描いてみてください。</p>
-            <canvas id="drawingCanvas" width="800" height="400"></canvas>
-            <h2>日記をつける</h2>
+                        <h2>日記をつける</h2>
             <textarea id="diaryEntry" rows="5" placeholder="今日の出来事を書いてみてください..."></textarea>
             <button onclick="saveDiaryEntry()">保存する</button>
             <h3>過去の日記</h3>
@@ -123,57 +120,25 @@
     <div id="flashlight"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <script>
-        // Intro animation for 鹿島秋 text
-        gsap.to("#intro-animation h1", {
-            opacity: 1,
-            duration: 2,
-            ease: "power2.inOut",
-            onComplete: function() {
-                gsap.to("#intro-animation", {
-                    opacity: 0,
-                    duration: 1,
-                    ease: "power2.inOut",
-                    onComplete: function() {
-                        document.getElementById("intro-animation").style.display = "none";
-                    }
-                });
-            }
-        });
-
-        // Drawing on canvas
-        const canvas = document.getElementById('drawingCanvas');
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
-
-        canvas.addEventListener('mousedown', () => {
-            drawing = true;
-        });
-
-        canvas.addEventListener('mouseup', () => {
-            drawing = false;
-            ctx.beginPath();
-        });
-
-        canvas.addEventListener('mousemove', draw);
-
-        function draw(event) {
-            if (!drawing) return;
-
-            ctx.lineWidth = 5;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = '#00bcd4';
-
-            ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
-        }
-
-        // Flashlight effect
+    
+        // Flashlight effect that leaves trails
         const flashlight = document.getElementById('flashlight');
+        const canvasFlashlight = document.createElement('canvas');
+        canvasFlashlight.width = window.innerWidth;
+        canvasFlashlight.height = window.innerHeight;
+        canvasFlashlight.style.position = 'fixed';
+        canvasFlashlight.style.top = '0';
+        canvasFlashlight.style.left = '0';
+        canvasFlashlight.style.pointerEvents = 'none';
+        canvasFlashlight.style.zIndex = '99';
+        document.body.appendChild(canvasFlashlight);
+        const ctx = canvasFlashlight.getContext('2d');
+
         document.addEventListener('mousemove', (e) => {
-            flashlight.style.background = `radial-gradient(circle 100px at ${e.clientX}px ${e.clientY}px, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.95) 60%)`;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.beginPath();
+            ctx.arc(e.clientX, e.clientY, 50, 0, Math.PI * 2);
+            ctx.fill();
         });
 
         // Save diary entry
