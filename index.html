@@ -47,10 +47,6 @@
             height: auto;
             margin: 20px 0;
         }
-        #drawingCanvas {
-            border: 1px solid #f0f0f0;
-            margin-top: 20px;
-        }
         #flashlight {
             position: fixed;
             top: 0;
@@ -98,7 +94,7 @@
                 <iframe width="800" height="450" src="https://www.youtube.com/embed/zAwnz9scWGQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin: 20px 0;"></iframe>
                 <iframe width="800" height="450" src="https://www.youtube.com/embed/0qcESaJGCJM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin: 20px 0;"></iframe>
             </div>
-                        <h2>日記をつける</h2>
+            <h2>日記をつける</h2>
             <textarea id="diaryEntry" rows="5" placeholder="今日の出来事を書いてみてください..."></textarea>
             <button onclick="saveDiaryEntry()">保存する</button>
             <h3>過去の日記</h3>
@@ -120,22 +116,38 @@
     <div id="flashlight"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    
+    <script>
+        // Intro animation for 鹿島秋 text
+        gsap.to("#intro-animation h1", {
+            opacity: 1,
+            duration: 2,
+            ease: "power2.inOut",
+            onComplete: function() {
+                gsap.to("#intro-animation", {
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.inOut",
+                    onComplete: function() {
+                        document.getElementById("intro-animation").remove();
+                    }
+                });
+            }
+        });
+
         // Flashlight effect that leaves trails
-        const flashlight = document.getElementById('flashlight');
-        const canvasFlashlight = document.createElement('canvas');
-        canvasFlashlight.width = window.innerWidth;
-        canvasFlashlight.height = window.innerHeight;
-        canvasFlashlight.style.position = 'fixed';
-        canvasFlashlight.style.top = '0';
-        canvasFlashlight.style.left = '0';
-        canvasFlashlight.style.pointerEvents = 'none';
-        canvasFlashlight.style.zIndex = '99';
-        document.body.appendChild(canvasFlashlight);
-        const ctx = canvasFlashlight.getContext('2d');
+        const flashlight = document.createElement('canvas');
+        flashlight.width = window.innerWidth;
+        flashlight.height = window.innerHeight;
+        flashlight.style.position = 'fixed';
+        flashlight.style.top = '0';
+        flashlight.style.left = '0';
+        flashlight.style.pointerEvents = 'none';
+        flashlight.style.zIndex = '99';
+        document.body.appendChild(flashlight);
+        const ctx = flashlight.getContext('2d');
 
         document.addEventListener('mousemove', (e) => {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
             ctx.beginPath();
             ctx.arc(e.clientX, e.clientY, 50, 0, Math.PI * 2);
             ctx.fill();
@@ -171,4 +183,4 @@
         window.onload = loadDiaryEntries;
     </script>
 </body>
-</html
+</html>
