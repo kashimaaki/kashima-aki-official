@@ -13,6 +13,7 @@
             overflow-x: hidden;
             background-color: #1a1a1a;
             color: #f0f0f0;
+            position: relative;
         }
         header {
             position: relative;
@@ -49,6 +50,18 @@
         #drawingCanvas {
             border: 1px solid #f0f0f0;
             margin-top: 20px;
+        }
+        #flashlight {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            background: radial-gradient(circle 100px at center, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.95) 60%);
+            mix-blend-mode: multiply;
+            z-index: 100;
+            transition: background 0.1s ease-out;
         }
     </style>
 </head>
@@ -87,6 +100,8 @@
             </div>
         </div>
     </div>
+
+    <div id="flashlight"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script>
@@ -135,6 +150,12 @@
             ctx.beginPath();
             ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
         }
+
+        // Flashlight effect
+        const flashlight = document.getElementById('flashlight');
+        document.addEventListener('mousemove', (e) => {
+            flashlight.style.background = `radial-gradient(circle 100px at ${e.clientX}px ${e.clientY}px, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.95) 60%)`;
+        });
     </script>
 </body>
 </html>
