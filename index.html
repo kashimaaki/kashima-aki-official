@@ -134,7 +134,7 @@
             }
         });
 
-        // Flashlight effect that leaves trails
+        // Flashlight effect with adjustable size
         const flashlight = document.createElement('canvas');
         flashlight.width = window.innerWidth;
         flashlight.height = window.innerHeight;
@@ -145,12 +145,22 @@
         flashlight.style.zIndex = '99';
         document.body.appendChild(flashlight);
         const ctx = flashlight.getContext('2d');
+        let radius = 50;
 
         document.addEventListener('mousemove', (e) => {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.clearRect(0, 0, flashlight.width, flashlight.height);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
             ctx.beginPath();
-            ctx.arc(e.clientX, e.clientY, 50, 0, Math.PI * 2);
+            ctx.arc(e.clientX, e.clientY, radius, 0, Math.PI * 2);
             ctx.fill();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                radius += 10;
+            } else if (e.key === 'ArrowDown' && radius > 10) {
+                radius -= 10;
+            }
         });
 
         // Save diary entry
