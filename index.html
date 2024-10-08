@@ -46,6 +46,10 @@
             height: auto;
             margin: 20px 0;
         }
+        #drawingCanvas {
+            border: 1px solid #f0f0f0;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -56,8 +60,9 @@
         <div class="header-title">鹿島秋 Official</div>
     </header>
     
-    </div>
-    <div class="container"><div class="content"><h2>鹿島秋のプロフィール</h2>
+    <div class="container">
+        <div class="content">
+            <h2>鹿島秋のプロフィール</h2>
             <p>慶應大学経済学部在籍</p>
             <p>音楽作成、mixを行う</p>
             <p>ボカロP</p>
@@ -66,13 +71,14 @@
                 <iframe width="800" height="450" src="https://www.youtube.com/embed/zAwnz9scWGQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin: 20px 0;"></iframe>
                 <iframe width="800" height="450" src="https://www.youtube.com/embed/0qcESaJGCJM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin: 20px 0;"></iframe>
             </div>
-            <div class="container"><div class="content"><h2>MokUrenについて</h2>
+            <h2>インタラクティブキャンバス</h2>
+            <p>下のキャンバスで自由に描いてみてください。</p>
+            <canvas id="drawingCanvas" width="800" height="400"></canvas>
+            <h2>MokUrenについて</h2>
             <div style="display: flex; align-items: center;">
                 <img src="images/gBsfYHVJ_400x400.jpg" alt="MokUren" style="width: 100px; height: 100px; border-radius: 50%; margin-right: 20px;">
                 <p>MokUrenは鹿島秋とタッグを組んで活動しており、時にはソロで活動するギターボーカルです。音楽制作において、共に新しい表現を探求しています。</p>
             </div>
-        </div></div>
-            <h2>Note</h2>
             <h2>各種リンク</h2>
             <div style="text-align: center;">
                 <a href="https://www.youtube.com/@kashima_aki" target="_blank" style="font-size: 1.5rem; margin: 10px; display: inline-block;">YouTube - 鹿島秋</a><br>
@@ -100,6 +106,35 @@
                 });
             }
         });
+
+        // Drawing on canvas
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        canvas.addEventListener('mousedown', () => {
+            drawing = true;
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            drawing = false;
+            ctx.beginPath();
+        });
+
+        canvas.addEventListener('mousemove', draw);
+
+        function draw(event) {
+            if (!drawing) return;
+
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#00bcd4';
+
+            ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+        }
     </script>
 </body>
 </html>
